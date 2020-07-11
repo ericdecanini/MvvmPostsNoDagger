@@ -13,14 +13,13 @@ import kotlinx.android.synthetic.main.fragment_main.view.*
 class MainFragment: Fragment() {
 
     private val viewModel: MainViewModel by activityViewModels()
-    private var adapter = PostsAdapter(ArrayList())
+    private val adapter = PostsAdapter(ArrayList())
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        observePosts()
         return inflater.inflate(R.layout.fragment_main, container, false)
     }
 
@@ -28,12 +27,13 @@ class MainFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         requireView().posts_recycler.adapter = adapter
         requireView().posts_recycler.layoutManager = LinearLayoutManager(requireContext())
+        observePosts()
     }
 
     private fun observePosts() {
-        viewModel.postsLiveData.observe(viewLifecycleOwner, Observer { posts ->
+        viewModel.postsLiveData.observe(viewLifecycleOwner, Observer {
             adapter.posts.clear()
-            adapter.posts.addAll(posts)
+            adapter.posts.addAll(it)
             adapter.notifyDataSetChanged()
         })
     }

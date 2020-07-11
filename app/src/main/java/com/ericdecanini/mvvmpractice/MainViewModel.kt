@@ -8,8 +8,7 @@ import kotlinx.coroutines.launch
 
 class MainViewModel: ViewModel() {
 
-    private val mainRepository = MainRepository()
-
+    private val repository = MainRepository()
     val postsLiveData = MutableLiveData<List<Post>>()
 
     init {
@@ -18,10 +17,9 @@ class MainViewModel: ViewModel() {
 
     private fun getPosts() {
         viewModelScope.launch {
-            val postList = mainRepository.getPosts()
-            postsLiveData.postValue(postList)
+            val posts = repository.getPosts()
+            postsLiveData.postValue(posts)
         }
     }
-
 
 }
